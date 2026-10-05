@@ -3,8 +3,8 @@
   "section": "\u2461 Chunking",
   "section_idx": 3,
   "sections_total": 10,
-  "xp_total": 14,
-  "active_minutes": 29,
+  "xp_total": 18,
+  "active_minutes": 33,
   "quiz_answered": 0,
   "quiz_correct": 0,
   "labs_self_reported": {
@@ -13,5 +13,5 @@
     "lab2c": false
   },
   "participant": null,
-  "updated_at": "2026-10-05T06:23:09.916988+00:00"
+  "updated_at": "2026-10-05T06:28:09.917041+00:00"
 }
