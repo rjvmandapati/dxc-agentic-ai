@@ -1,10 +1,10 @@
 {
   "session": "S03",
-  "section": "Welcome",
-  "section_idx": 0,
+  "section": "\u2460 Embeddings",
+  "section_idx": 1,
   "sections_total": 10,
-  "xp_total": 6,
-  "active_minutes": 7,
+  "xp_total": 7,
+  "active_minutes": 11,
   "quiz_answered": 0,
   "quiz_correct": 0,
   "labs_self_reported": {
@@ -13,5 +13,5 @@
     "lab2c": false
   },
   "participant": null,
-  "updated_at": "2026-10-05T04:06:09.875723+00:00"
+  "updated_at": "2026-10-05T04:11:09.870629+00:00"
 }
