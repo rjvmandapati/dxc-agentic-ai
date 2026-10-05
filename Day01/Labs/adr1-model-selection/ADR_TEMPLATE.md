@@ -14,20 +14,21 @@
 
 ## 1. Context
 *Two or three lines in your own words: what problem, for whom, and the main constraints (data, budget, skills, timeline).*
-
+The management of Bharat Suraksha Insurance wants to have a ClaimsCoPilot that helps with summarizing the Claims file, answer thousands of questions coming from customers and process letters to customers in English and Hindi within a minute.
 ## 2. Decision drivers
 *Rank the top 4. Examples: data residency · cost per month · time to launch · quality · team skills · latency · vendor lock-in.*
 
-1.
-2.
-3.
-4.
+1. Data residency (privacy and security)
+2. Cost per month
+3. Latency (response times)
+4. Quality
+5. Ease of use
 
 ## 3. Options considered
 
 | Option (path + pay model + model) | Pros | Cons |
 |---|---|---|
-| **A.** | | |
+| **A.** |Public cloud | |
 | **B.** | | |
 | **C.** | | |
 
