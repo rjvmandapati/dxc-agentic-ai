@@ -26,14 +26,17 @@ def embed(client, text, dimensions=512):
     #   response = client.invoke_model(modelId=EMBED_MODEL, body=body)
     #   result = json.loads(response["body"].read())
     #   return result["embedding"]
-    raise NotImplementedError("TODO-1")
+    body = json.dumps({"inputText": text, "dimensions": dimensions, "normalize": True})
+    response = client.invoke_model(modelId=EMBED_MODEL, body=body)
+    return json.loads(response["body"].read())["embedding"]
 
 
 def cosine(a, b):
     """Cosine similarity between two vectors: 1 = same meaning, ~0 = unrelated."""
     # TODO-2: dot(a, b) / (norm(a) * norm(b))   -> use np.dot and np.linalg.norm
     #   Return a plain Python float.
-    raise NotImplementedError("TODO-2")
+    a, b = np.asarray(a, dtype=float), np.asarray(b, dtype=float)
+    return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
 
 
 def top_k(query_vec, items, k=3):
@@ -41,7 +44,9 @@ def top_k(query_vec, items, k=3):
     Return the k most similar items as [{"id": ..., "score": ...}], highest score first."""
     # TODO-3: score every item with cosine(query_vec, item["vector"]),
     #   sort by score (highest first) and return the first k as {"id", "score"} dicts.
-    raise NotImplementedError("TODO-3")
+    # raise NotImplementedError("TODO-3")
+    scored = [{"id": it["id"], "score": cosine(query_vec, it["vector"])} for it in items]
+    return sorted(scored, key=lambda h: h["score"], reverse=True)[:k]
 
 
 PAIRS = [
