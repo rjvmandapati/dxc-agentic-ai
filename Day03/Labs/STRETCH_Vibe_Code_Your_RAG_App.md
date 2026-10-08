@@ -124,13 +124,13 @@ MUST-HAVE FEATURES
    Titan model access. Let me retry.
 
 MAKE IT MINE
-- App name: [APP NAME]. Page title icon: [AVATAR EMOJI]. Tagline under the title: "[TAGLINE]".
-- Personality: [PERSONALITY]. Style of talking: [STYLE]. Put this in the prompt to the chat model,
+- App name: [Ask Buddy]. Page title icon: [🎩]. Tagline under the title: "[Upload. Ask. Done]".
+- Personality: [formal]. Style of talking: [polite]. Put this in the prompt to the chat model,
   but the answer must still come only from the PDF and must still cite pages.
-- Theme: [COLOUR AND THEME]. Use a small CSS block with st.markdown (coloured header, rounded
+- Theme: [teal on dark]. Use a small CSS block with st.markdown (coloured header, rounded
   chat bubbles, coloured buttons). Use the avatar emoji as the assistant avatar.
-- Sidebar "About me" card with: [YOUR NAME OR TEAM], today's date and one fun line.
-- Footer: "Built by [YOUR NAME OR TEAM] with vibe coding at DevPro Academy".
+- Sidebar "About me" card with: [Rajeev], today's date and one fun line.
+- Footer: "Built by [Rajeev] with vibe coding at DevPro Academy".
 
 ONLY AFTER THE MUST-HAVE FEATURES WORK, add (in this order):
 - A "Not in my PDF?" button that asks a question from outside the PDF (for example "Who won the
