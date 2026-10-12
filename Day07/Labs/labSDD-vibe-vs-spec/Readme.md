@@ -105,8 +105,8 @@ Output keys: `priority` ("P1".."P4"), `queue` (str), `sla_hours` (int)
 - R4 SLA hours: P1 = 4, P2 = 8, P3 = 24, P4 = 72
 - R5 Empty or missing title: raise ValueError
 - R6 affected_users missing: treat as 1. affected_users < 1 or not an int: raise ValueError
-- R7 TODO: decide what happens when the description is None (we say: ______)
-- R8 TODO: decide whether to log anything (we say: ______)
+- R7 TODO: decide what happens when the description is None (we say: Check your description and run again)
+- R8 TODO: decide whether to log anything (we say: log everything)
 
 ## Acceptance Criteria
 - AC1 60 affected users -> P1, SLA 4
