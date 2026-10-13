@@ -1,0 +1,3 @@
+1. One server keeps the routing and approval rules in one place, so every agent uses the same behavior instead of drifting copies.
+2. I would put role and log in front of it, and mask if any sensitive text can appear in ticket content, because those controls reduce misuse and preserve auditability.
+3. I would choose VM stdio, because it is the simplest local deployment for an agent tool and avoids exposing an HTTP surface unless I need remote access.
