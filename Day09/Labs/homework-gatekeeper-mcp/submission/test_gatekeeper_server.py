@@ -24,7 +24,7 @@ def main() -> int:
     async def run_checks() -> None:
         async with Client(mcp) as client:
             tools = await client.list_tools()
-            report("list_tools", any(tool.name == "route_ticket" for tool in tools) and any(tool.name == "needs_approval" for tool in tools))
+            report("list_tools", all(tool_name in {tool.name for tool in tools} for tool_name in {"route_ticket", "needs_approval", "safe_to_remember"}))
 
             route_examples = [
                 ("phishing email reported", "Security"),
@@ -43,6 +43,15 @@ def main() -> int:
             for index, ((action, user_id, hour), expected) in enumerate(approval_examples, start=1):
                 result = await client.call_tool("needs_approval", {"action": action, "user_id": user_id, "hour": hour})
                 report(f"needs_approval_{index}", result.content[0].text.lower() == str(expected).lower())
+
+            remember_examples = [
+                ("reset password for EMP-1001", False),
+                ("printer jammed on floor 2", True),
+                ("home address is 123 Main St", False),
+            ]
+            for index, (text, expected) in enumerate(remember_examples, start=1):
+                result = await client.call_tool("safe_to_remember", {"text": text})
+                report(f"safe_to_remember_{index}", result.content[0].text.lower() == str(expected).lower())
 
     asyncio.run(run_checks())
     return 0

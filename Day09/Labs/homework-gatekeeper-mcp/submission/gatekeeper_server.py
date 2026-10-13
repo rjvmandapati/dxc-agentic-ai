@@ -8,7 +8,7 @@ from fastmcp import FastMCP
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from gatekeeper import needs_approval as gatekeeper_needs_approval, route
+from gatekeeper import needs_approval as gatekeeper_needs_approval, route, safe_to_remember as gatekeeper_safe_to_remember
 
 
 mcp = FastMCP("AskIT Gatekeeper")
@@ -22,6 +22,11 @@ def route_ticket(text: str) -> str:
 @mcp.tool(description="Decide whether an action needs approval for a user at a given hour.")
 def needs_approval(action: str, user_id: str, hour: int) -> bool:
     return bool(gatekeeper_needs_approval(action, user_id, hour)["approval"])
+
+
+@mcp.tool(description="Check whether a fact is safe to remember without sensitive data.")
+def safe_to_remember(text: str) -> bool:
+    return gatekeeper_safe_to_remember(text)
 
 
 def main() -> None:
