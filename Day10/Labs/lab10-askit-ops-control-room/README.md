@@ -55,6 +55,16 @@ Keep the terminal open. In the sidebar (left) leave **1 · Model** on **AWS Bedr
 
 The test fails? Skip this. Everything in the lab still works; you only miss the Langfuse view in tab 1.
 
+### What the app sends to Langfuse
+
+The tracer in `ops_trace.py` sends one Langfuse trace per AskIT run, with child spans for each model call and tool call. Each span includes the step name, timing, inputs, outputs, token counts and cost so you can debug the full agent path, not just the final answer.
+
+Best practice for this lab:
+
+1. Keep the Langfuse keys in the lab-local `.env` file only.
+2. Turn on Langfuse in the sidebar only when you want to send new runs.
+3. Re-run the same question after connecting so the trace includes the full run from that point onward.
+
 ---
 
 ## The big picture (read once, 2 minutes)

@@ -70,6 +70,15 @@ def lf_now():
     return lf_for(os.getenv("LANGFUSE_PUBLIC_KEY", ""), os.getenv("LANGFUSE_SECRET_KEY", ""), os.getenv("LANGFUSE_HOST", "")) if S.lf_on else None
 
 
+def lf_status_text():
+    """Return a short, user-facing summary of the current Langfuse state."""
+    if not (os.getenv("LANGFUSE_PUBLIC_KEY") and os.getenv("LANGFUSE_SECRET_KEY")):
+        return "Langfuse is not connected yet. Paste your team keys to start sending traces."
+    lf = lf_now()
+    ok, msg = ot.langfuse_check(lf)
+    return msg if ok else f"Langfuse is configured, but the connection check failed: {msg}"
+
+
 def save_keys(block, host_choice):
     """Find the two keys in what was pasted (with or without the NAME= part) and write them to this lab's own .env file."""
     pk, sk = re.search(r"pk-lf-[\w-]+", block), re.search(r"sk-lf-[\w-]+", block)
@@ -204,6 +213,7 @@ with st.sidebar:
     st.divider()
     st.subheader("2 · Langfuse (your team)")
     have = bool(os.getenv("LANGFUSE_PUBLIC_KEY") and os.getenv("LANGFUSE_SECRET_KEY"))
+    st.caption(lf_status_text())
     if have:
         st.checkbox("Send every run to Langfuse", key="lf_on")
         if st.button("Test the connection"):
