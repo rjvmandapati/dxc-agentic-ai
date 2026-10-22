@@ -35,7 +35,11 @@ def langfuse_client():
     try:
         from langfuse import Langfuse
         host = os.getenv("LANGFUSE_HOST") or os.getenv("LANGFUSE_BASE_URL") or "https://cloud.langfuse.com"
-        return Langfuse(public_key=os.environ["LANGFUSE_PUBLIC_KEY"], secret_key=os.environ["LANGFUSE_SECRET_KEY"], host=host)
+        return Langfuse(
+            public_key=os.environ["LANGFUSE_PUBLIC_KEY"],
+            secret_key=os.environ["LANGFUSE_SECRET_KEY"],
+            host=host,
+        )
     except Exception:                                                   # noqa: BLE001
         return None
 
@@ -45,7 +49,8 @@ def langfuse_check(lf):
     if lf is None:
         return False, "No Langfuse keys yet (the lab still works without them)."
     try:
-        return (True, "Connected to Langfuse. New runs are sent live.") if lf.auth_check() else (False, "Langfuse said the keys are wrong.")
+        ok = lf.auth_check()
+        return (True, "Connected to Langfuse. New runs are sent live.") if ok else (False, "Langfuse said the keys are wrong.")
     except Exception as e:                                              # noqa: BLE001
         return False, f"Could not reach Langfuse: {type(e).__name__}. Check the host and your network."
 
@@ -63,7 +68,7 @@ class Tracer:
                       "answer": "", "status": "ok", "langfuse_id": "", "langfuse_url": ""}
         self.lf = lf
         self._t0 = time.perf_counter()
-        self._stack = []
+        self._root = None
 
     # ---- whole run
     @contextmanager
@@ -76,7 +81,7 @@ class Tracer:
                 cm = self.lf.start_as_current_observation(name=self.trace["name"], as_type="agent", input=question,
                                                            metadata={"model": self.trace["model"], **self.trace["tags"]})
                 self._root = cm.__enter__()
-                self.trace["langfuse_id"] = getattr(self._root, "trace_id", "") or ""
+                self.trace["langfuse_id"] = getattr(self._root, "trace_id", "") or getattr(self._root, "id", "") or ""
         except Exception:                                               # noqa: BLE001
             cm = None
         try:
@@ -98,10 +103,15 @@ class Tracer:
         t["tool_calls"] = sum(1 for s in t["spans"] if s["kind"] == "tool")
         if cm is not None:
             try:
-                self._root.update(output=t.get("answer", ""), level="ERROR" if t["status"] == "error" else "DEFAULT")
+                if self._root is not None:
+                    self._root.update(output=t.get("answer", ""), level="ERROR" if t["status"] == "error" else "DEFAULT")
                 cm.__exit__(None, None, None)
-                self.lf.flush()
-                t["langfuse_url"] = self.lf.get_trace_url(trace_id=t["langfuse_id"]) or ""
+                flush = getattr(self.lf, "flush", None)
+                if callable(flush):
+                    flush()
+                get_trace_url = getattr(self.lf, "get_trace_url", None)
+                if callable(get_trace_url) and t["langfuse_id"]:
+                    t["langfuse_url"] = get_trace_url(trace_id=t["langfuse_id"]) or ""
             except Exception:                                           # noqa: BLE001
                 pass
 

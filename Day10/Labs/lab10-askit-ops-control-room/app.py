@@ -63,11 +63,15 @@ def model_for(p):
 
 @st.cache_resource(show_spinner=False)
 def lf_for(pk, sk, host):
+    if not (pk and sk):
+        return None
     return ot.langfuse_client()
 
 
 def lf_now():
-    return lf_for(os.getenv("LANGFUSE_PUBLIC_KEY", ""), os.getenv("LANGFUSE_SECRET_KEY", ""), os.getenv("LANGFUSE_HOST", "")) if S.lf_on else None
+    if not S.lf_on:
+        return None
+    return lf_for(os.getenv("LANGFUSE_PUBLIC_KEY", ""), os.getenv("LANGFUSE_SECRET_KEY", ""), os.getenv("LANGFUSE_HOST", ""))
 
 
 def lf_status_text():
